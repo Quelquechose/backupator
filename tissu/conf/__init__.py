@@ -1,8 +1,8 @@
 """
-Settings and configuration for Django.
+Settings and configuration for your application.
 
-Values will be read from the module specified by the DJANGO_SETTINGS_MODULE environment
-variable, and then from django.conf.global_settings; see the global settings file for
+Values will be read from the module specified by the TISSU_SETTINGS_MODULE environment
+variable, and then from TISSU_GLOBAL_SETTINGS; see the global settings file for
 a list of all possible variables.
 """
 
@@ -11,10 +11,10 @@ import re
 import time     # Needed for Windows
 import warnings
 
-from backupator.conf import global_settings
-from backupator import importlib
+import global_settings
+import importlib
 
-ENVIRONMENT_VARIABLE = "RBSCOOKING_SETTINGS_MODULE"
+ENVIRONMENT_VARIABLE = "APP_SETTINGS_MODULE"
 
 
 empty = object()
@@ -69,7 +69,7 @@ class LazySettings(LazyObject):
     """
     A lazy proxy for either global settings or a custom settings object.
     The user can manually configure settings prior to using them. Otherwise,
-    Django uses the settings module pointed to by RBSCOOKING_SETTINGS_MODULE.
+    Tissu uses the settings module pointed to by TISSU_SETTINGS_MODULE.
     """
     def _setup(self):
         """

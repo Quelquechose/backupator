@@ -2,21 +2,22 @@
 DEBUG = True
 
 
+FABRIC_PARALLEL_EXECUTION = False
+
 VALKYRIE2= {
- "hostname" : "xxxx", 
- "user" : "xxxx",
- "password": "xxxx"
+ "hostname" : "valkyrie2", 
+ "user" : "jeanglode",
 }
 
-SOULOU= {
- "hostname" : "xxx",
- "user" : "xxxx",
- "password" : "xxxx"
+LOCALHOST = {
+ "hostname" : "localhost",
+ "force_local" : True,
 }
 
-WEBAPP_ROLEDEFS = {
-    'mysql': [VALKYRIE2],
-    'pgsql': [SOULOU],
+
+APP_ROLEDEFS = {
+    'mysql': [VALKYRIE2, LOCALHOST],
+    'files': [VALKYRIE2, LOCALHOST],
 }
 
 MYSQL = {
@@ -26,14 +27,12 @@ MYSQL = {
  "ignore_database": ["information_schema",],
 }
 
-PGSQL = {
- "host" : "localhost",
- "user" : "backup_pgsql",
- "passwd" : "hacksxb67",
- "ignore_database": ["template0"],
-}
 
 BACKUP = {
  "repo_path": "~/backup/repo",
 }
 
+BACKUP_APPS = {
+    "backupator.db.mysql",
+    "backupator.files"
+}

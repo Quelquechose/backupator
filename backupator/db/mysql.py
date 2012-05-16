@@ -11,8 +11,6 @@ from fabric.contrib import files
 from backupator.conf import settings
 
 
-
-
 @task
 @roles("mysql")
 def dump( dbname, user, passwd, host="localhost"):
@@ -22,7 +20,6 @@ def dump( dbname, user, passwd, host="localhost"):
     destination = "%s/mysql/" % (settings.BACKUP["repo_path"],)
     if not os.path.exists(destination):
          run("mkdir -p %s" % (destination,))
-
 
     get(filename, destination)
     run("rm %s" % filename)
@@ -50,9 +47,8 @@ def backup():
 	ignore = settings.MYSQL["ignore_database"]
 	db_names = get_names(user, passwd, host, ignore)
 
-        for db_name in db_names:
+    for db_name in db_names:
 	    dump(db_name, user, passwd, host)
-
 
     else:
         warn(red("Impossible de charger les settings MySQL")) 
