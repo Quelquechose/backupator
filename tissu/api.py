@@ -124,13 +124,13 @@ ENV_LOADERS = {
 @task
 def l(loader):
     if loader in ENV_LOADERS.keys():
-        env.rbscooking_loader = loader
+        env.tissu_loader = loader
     else:
         abort(red("%s is not a valider loader name, accepted values are : %s" % (loader, ENV_LOADERS.keys())))
 
 @task
 def e(envname):
-    loader = getattr(env,"rbscooking_loader" , ENV_LOADER_PYTHON)
+    loader = getattr(env,"tissu_loader" , ENV_LOADER_PYTHON)
     
     if envname is not None:
         ENV_LOADERS[loader](envname)
