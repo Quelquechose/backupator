@@ -1,13 +1,26 @@
+from default import *
 
 DEBUG = True
 
 
+
 FABRIC_PARALLEL_EXECUTION = False
+
+MYSQL = {
+ "host" : "localhost",
+ "user" : "hacksxb",
+ "passwd" : "xxxx",
+ "ignore_database": ["information_schema",],
+}
+
+
 
 VALKYRIE2= {
  "hostname" : "valkyrie2", 
  "user" : "jeanglode",
- "backupator_root" : "~/backupator"
+ "backupator_root" : "~/backupator",
+ "backup_dir" : "~/backup/",
+ "mysql" : MYSQL,
 }
 
 LOCALHOST = {
@@ -22,19 +35,15 @@ APP_ROLEDEFS = {
     'node' : [VALKYRIE2]
 }
 
-MYSQL = {
- "host" : "localhost",
- "user" : "hacksxb",
- "passwd" : "xxxx",
- "ignore_database": ["information_schema",],
-}
 
 
-BACKUP = {
- "repo_path": "~/backup/repo",
-}
 
 BACKUP_PROCESS = {
     #"db.mysql",
     "files"
 }
+
+try:
+    from local_settings import *
+except ImportError, exp:
+    pass

@@ -8,7 +8,17 @@ from fabric.operations import get
 from fabric.contrib import files
 
 from backupator.conf import settings
-from backupator.api import lrun
+from backupator.api import lrun, get_backup_dir, current_hostdef
+
+def get_settings():
+    hostdef = current_hostdef()
+    mysql = hostdef.get("mysql")
+
+    user = mysql.get("user")
+    passwd = mysql.get("passwd")
+    host = mysql.get("host", "localhost")
+    ignore = mysql.get("ignore_database", [])
+    return (user, passwd, host, ignore)
 
 @task
 @roles("mysql")
@@ -16,7 +26,7 @@ def dump( dbname, user, passwd, host="localhost"):
     filename = "~/%s_%s.sql" % (dbname, datetime.now().strftime("%Y%m%d_%H%M%S") )
     lrun("mysqldump -h %s -u %s -p%s %s > %s" % (host, user, passwd, dbname, filename))
     
-    destination = "%s/mysql/" % (settings.BACKUP["repo_path"],)
+    destination = "%s/mysql/" % (get_backup_dir(),)
     if not os.path.exists(destination):
          lrun("mkdir -p %s" % (destination,))
 
@@ -37,17 +47,14 @@ def get_names(user, passwd, host="localhost", ignore=None):
 
 @task
 @roles("mysql")
-def backup():
-    if hasattr(settings, "MYSQL"):
-        
-	user = settings.MYSQL["user"]
-	passwd = settings.MYSQL["passwd"]
-	host = settings.MYSQL.get("host", "localhost")
-	ignore = settings.MYSQL["ignore_database"]
-	db_names = get_names(user, passwd, host, ignore)
+def backup():    
+    user, passwd, host, ignore = get_settings()
 
-    for db_name in db_names:
-	    dump(db_name, user, passwd, host)
+    if user:
+    	db_names = get_names(user, passwd, host, ignore)
+
+        for db_name in db_names:
+	       dump(db_name, user, passwd, host)
 
     else:
         warn(red("Impossible de charger les settings MySQL")) 

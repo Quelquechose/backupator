@@ -17,6 +17,9 @@ def lrun(cmd):
 def get_backupator_root():
     return current_hostdef().get("backupator_root", None)
 
+def get_backup_dir():
+    return current_hostdef().get("backup_dir", None)
+
 @task
 def backup():
     from backupator.conf import settings

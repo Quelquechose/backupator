@@ -7,6 +7,7 @@ from fabric.colors import red
 from fabric.operations import get
 from fabric.contrib import files
 
+from backupator.api import lrun, get_backup_dir
 from backupator.conf import settings
 
 @task
@@ -16,7 +17,7 @@ def dump( dbname, user, passwd, host="localhost"):
     with prefix("export PGPASSWORD=%s" % passwd):
         lrun("pg_dump -U %s -h %s %s > %s" % (user, host, dbname, filename))
     
-    destination = "%s/pgsql/" % (settings.BACKUP["repo_path"],)
+    destination = "%s/pgsql/" % (get_backup_dir(),)
     print destination
     if not os.path.exists(destination):
         lrun("mkdir -p %s" % (destination,))
