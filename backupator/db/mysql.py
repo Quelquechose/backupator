@@ -33,7 +33,7 @@ def dump( dbname, user, passwd, host="localhost"):
 def get_names(user, passwd, host="localhost", ignore=None):
     cmd = "mysql -u%s -p%s --batch -e \"SHOW DATABASES\" -h %s" % (user, passwd, host)
     output = lrun(cmd)
-    db_names = output.split("\r\n")[1:]
+    db_names = output.split("\n")[1:]
 
     if ignore is not None:
         for name in ignore:

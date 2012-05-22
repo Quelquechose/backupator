@@ -12,7 +12,7 @@ def lrun(cmd):
     local or remote run
     """
     if is_force_local():
-        return local(cmd)
+        return local(cmd, capture=True)
     else:
         return run(cmd)    
 
