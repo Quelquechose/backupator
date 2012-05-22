@@ -35,6 +35,15 @@ def update_env():
         with prefix("source env/bin/activate"):
             run("pip install -U -r src/requirements.txt")
 
+@task()
+@roles('node')
+def update_code():
+    with cd(get_backupator_root()):
+        with cd("src"):
+            run("git pull")
+
+
+
 @task
 @roles('node')
 def cleanup():
@@ -45,10 +54,9 @@ def cleanup():
 @roles('node')
 def update():
     execute(update_env)
-    with cd(get_backupator_root()):
-        with cd("src"):
-            run("git pull")
+    execute(update_code)
     execute(cleanup)
+
 
 @task
 @roles('node')
