@@ -13,7 +13,6 @@ from backupator.api import lrun, get_backup_dir, current_hostdef, is_force_local
 def get_settings():
     hostdef = current_hostdef()
     mysql = hostdef.get("mysql")
-
     user = mysql.get("user")
     passwd = mysql.get("passwd")
     host = mysql.get("host", "localhost")
@@ -33,29 +32,20 @@ def dump( dbname, user, passwd, host="localhost"):
 @roles("mysql")
 def get_names(user, passwd, host="localhost", ignore=None):
     cmd = "mysql -u%s -p%s --batch -e \"SHOW DATABASES\" -h %s" % (user, passwd, host)
-    output = run(cmd)
+    output = lrun(cmd)
     db_names = output.split("\r\n")[1:]
     if ignore is not None:
         for name in ignore:
-	    print name, db_names
-	    db_names.remove(name)
+	       db_names.remove(name)
     return db_names
 
 @task
 @roles("mysql")
 def backup():    
     user, passwd, host, ignore = get_settings()
-
     if user:
     	db_names = get_names(user, passwd, host, ignore)
-
         for db_name in db_names:
 	       dump(db_name, user, passwd, host)
-
     else:
-        warn(red("Impossible de charger les settings MySQL")) 
-
-
-
-
-
+        warn(red("Impossible de charger les settings MySQL"))
