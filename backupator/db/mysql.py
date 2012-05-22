@@ -23,7 +23,7 @@ def get_settings():
 @roles("mysql")
 def dump( dbname, user, passwd, host="localhost"):
     filename = "%s_%s.sql" % (dbname, datetime.now().strftime("%Y%m%d_%H%M%S") )
-    destination = "%s/mysql/" % (get_backup_dir(),)
+    destination = "%s/mysql" % (get_backup_dir(),)
     lrun("mkdir -p %s" % (destination,))
     lrun("mysqldump -h %s -u %s -p%s %s > %s/%s" % (host, user, passwd, dbname, destination, filename))
     
@@ -34,9 +34,11 @@ def get_names(user, passwd, host="localhost", ignore=None):
     cmd = "mysql -u%s -p%s --batch -e \"SHOW DATABASES\" -h %s" % (user, passwd, host)
     output = lrun(cmd)
     db_names = output.split("\r\n")[1:]
+
     if ignore is not None:
         for name in ignore:
-	       db_names.remove(name)
+            if name in db_names:
+                db_names.remove(name)
     return db_names
 
 @task
@@ -46,6 +48,6 @@ def backup():
     if user:
     	db_names = get_names(user, passwd, host, ignore)
         for db_name in db_names:
-	       dump(db_name, user, passwd, host)
+            execute(dump,db_name, user, passwd, host)
     else:
         warn(red("Impossible de charger les settings MySQL"))
