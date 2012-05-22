@@ -62,6 +62,12 @@ def epy(envname=None):
 
     from backupator.conf import settings
 
+    env.use_ssh_config = False
+    if settings.FABRIC_USE_SSH_CONFIG:
+        if env.ssh_config_path and os.path.isfile(os.path.expanduser(env.ssh_config_path)):
+            env.use_ssh_config = True
+
+
     roledefs = getattr(settings, 'APP_ROLEDEFS', {})
     
     all_hosts = []

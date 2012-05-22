@@ -8,7 +8,7 @@ from fabric.operations import get
 from fabric.contrib import files
 
 from backupator.conf import settings
-from backupator.api import lrun, get_backup_dir, current_hostdef
+from backupator.api import lrun, get_backup_dir, current_hostdef, is_force_local
 
 def get_settings():
     hostdef = current_hostdef()
@@ -23,15 +23,11 @@ def get_settings():
 @task
 @roles("mysql")
 def dump( dbname, user, passwd, host="localhost"):
-    filename = "~/%s_%s.sql" % (dbname, datetime.now().strftime("%Y%m%d_%H%M%S") )
-    lrun("mysqldump -h %s -u %s -p%s %s > %s" % (host, user, passwd, dbname, filename))
-    
+    filename = "%s_%s.sql" % (dbname, datetime.now().strftime("%Y%m%d_%H%M%S") )
     destination = "%s/mysql/" % (get_backup_dir(),)
-    if not os.path.exists(destination):
-         lrun("mkdir -p %s" % (destination,))
-
-    get(filename, destination)
-    lrun("rm %s" % filename)
+    lrun("mkdir -p %s" % (destination,))
+    lrun("mysqldump -h %s -u %s -p%s %s > %s/%s" % (host, user, passwd, dbname, destination, filename))
+    
 
 @task
 @roles("mysql")
