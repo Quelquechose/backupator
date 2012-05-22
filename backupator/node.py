@@ -35,8 +35,8 @@ def cleanup():
 @task()
 @roles('node')
 def update():
+    execute(update_env)
     with cd(get_backupator_root()):
-        execute(update_env)
         with cd("src"):
             run("git pull")
     execute(cleanup)
