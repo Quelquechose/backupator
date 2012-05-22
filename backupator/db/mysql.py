@@ -7,22 +7,21 @@ from fabric.colors import red
 from fabric.operations import get
 from fabric.contrib import files
 
-
 from backupator.conf import settings
-
+from backupator.api import lrun
 
 @task
 @roles("mysql")
 def dump( dbname, user, passwd, host="localhost"):
     filename = "~/%s_%s.sql" % (dbname, datetime.now().strftime("%Y%m%d_%H%M%S") )
-    run("mysqldump -h %s -u %s -p%s %s > %s" % (host, user, passwd, dbname, filename))
+    lrun("mysqldump -h %s -u %s -p%s %s > %s" % (host, user, passwd, dbname, filename))
     
     destination = "%s/mysql/" % (settings.BACKUP["repo_path"],)
     if not os.path.exists(destination):
-         run("mkdir -p %s" % (destination,))
+         lrun("mkdir -p %s" % (destination,))
 
     get(filename, destination)
-    run("rm %s" % filename)
+    lrun("rm %s" % filename)
 
 @task
 @roles("mysql")

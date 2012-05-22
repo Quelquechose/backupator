@@ -1,7 +1,7 @@
 from fabric.api import *
-from backupator.api import run
+from backupator.api import lrun
 
 @roles('files')
 @task
-def test():
-    run("whoami")
+def backup():
+    lrun("whoami")

@@ -7,6 +7,7 @@ sys.path.append(current_dir)
 from fabric.api import *
 from backupator.api import *
 
-#@todo remplacer par un chargement de settings
-#from backupator import db, files
+import tissu.debug as debug
+from backupator import db, files, node
+
 

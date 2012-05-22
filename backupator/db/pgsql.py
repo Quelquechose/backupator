@@ -14,16 +14,16 @@ from backupator.conf import settings
 def dump( dbname, user, passwd, host="localhost"):
     filename = "~/%s_%s.sql" % (dbname, datetime.now().strftime("%Y%m%d_%H%M%S") )
     with prefix("export PGPASSWORD=%s" % passwd):
-        run("pg_dump -U %s -h %s %s > %s" % (user, host, dbname, filename))
+        lrun("pg_dump -U %s -h %s %s > %s" % (user, host, dbname, filename))
     
     destination = "%s/pgsql/" % (settings.BACKUP["repo_path"],)
     print destination
     if not os.path.exists(destination):
-        run("mkdir -p %s" % (destination,))
+        lrun("mkdir -p %s" % (destination,))
 
     destination = "%s%s" % (destination,filename)
     get(filename, destination)
-    run("rm %s" % filename)
+    lrun("rm %s" % filename)
 
 @task
 @roles("pgsql")

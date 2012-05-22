@@ -72,10 +72,8 @@ def epy(envname=None):
         all_hosts += role_hosts
         env.roledefs[role] = role_hosts
         
-        
         password = dict((hoststring_from_hostdef(h), h.get("password")) for h in hosts)
-        env.passwords.update(password)
-        
+        env.passwords.update(password)        
 
         hostdefs = dict((hoststring_from_hostdef(h), h) for h in hosts)
         env.hostdefs.update(hostdefs)
@@ -92,6 +90,7 @@ def epy(envname=None):
          abort(red("Unable to load ROLEDEFS is APP_ROLEDEFS defined in your settings file ?"))
     else:
         set_parallel_execution()
+        
         puts(green("Environment %s sucessfully loaded :)" % envname))
 
 
@@ -136,8 +135,3 @@ def e(envname):
         ENV_LOADERS[loader](envname)
     else:
         abort(red("Please give an environment name :( \n$ fab e:production"))
-
-@task 
-def debug_env():
-    for k,v in env.items():
-        puts("%s : %s" % ( yellow(k),v ) )
