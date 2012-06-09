@@ -8,6 +8,6 @@ from fabric.api import *
 from backupator.api import *
 
 import tissu.debug as debug
-from backupator import db, files, node
+from backupator import db, files, node, bup
 
 
