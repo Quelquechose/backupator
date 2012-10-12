@@ -42,8 +42,6 @@ def update_code():
         with cd("src"):
             run("git pull")
 
-
-
 @task
 @roles('node')
 def cleanup():

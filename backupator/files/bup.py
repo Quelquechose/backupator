@@ -30,4 +30,3 @@ def install(operating_system="ubuntu/linux"):
 		with lcd("src"):
 	 		local("DESTDIR=%s make" % build_dir, )
 	 		local("DESTDIR=%s make install" % build_dir, )
-
