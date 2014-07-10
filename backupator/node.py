@@ -73,3 +73,8 @@ def upload(filepath):
     remote_path = "%s/%s/%s" % (get_backupator_root(), "src", filepath)
     
     put(local_path, remote_path)
+
+@task
+@roles('node')
+def uptime():
+    run("uptime")

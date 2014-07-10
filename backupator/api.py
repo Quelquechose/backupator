@@ -23,7 +23,13 @@ def get_backup_dir():
     return current_hostdef().get("backup_dir", None)
 
 @task
-def backup():
+def backup(*args, **kwargs):
     from backupator.conf import settings
-    for process_task in getattr(settings,"BACKUP_PROCESS", []):
+
+    if len(args) > 0:
+        tasks = args
+    else:
+        tasks = getattr(settings,"BACKUP_PROCESS", [])
+
+    for process_task in tasks:
         execute("%s.backup" % (process_task,))
