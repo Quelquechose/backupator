@@ -30,7 +30,7 @@ LOCALHOST = {
 
 
 APP_ROLEDEFS = {
-    'mysql': [VALKYRIE2, LOCALHOST],
+    'mysql': [VALKYRIE2],
     'files': [VALKYRIE2, LOCALHOST],
     'node' : [VALKYRIE2]
 }
